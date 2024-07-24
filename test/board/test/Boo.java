@@ -1,4 +1,4 @@
-package CJ.test;
+package board.test;
 
 public class Boo {
     public void sayBoo() {

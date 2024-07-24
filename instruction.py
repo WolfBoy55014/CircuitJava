@@ -5,6 +5,8 @@ from runtime.jclass import ClassLoader, JString, JDouble, JLong, JFloat, JIntege
 from runtime.jobject import JArray, JRef
 from base.utils import print_utils, common_utils, error_handler
 from jthread.jthread import JThread
+from jboard import GPIO
+gpio = GPIO()
 
 '''
 以下指令没有测试
@@ -1866,6 +1868,16 @@ class INVOKEVIRTUAL(Instruction):
         self.__hack_thread(n_frame, method)
         # hack boo
         self.__hack_boo(n_frame, method)
+        # hack GPIO
+        self.__hack_gpio(n_frame, method)
+        
+    def __hack_gpio(self, n_frame, method):
+        if method.name == 'write' and method.jclass.name == 'board/GPIO':
+            if method.descriptor == '(IZ)V':
+                pin = n_frame.local_vars.get_int(1)
+                value = n_frame.local_vars.get_int(2)
+                gpio.write(pin, value) 
+                
         
     def __hack_boo(self, n_frame, method):
         if method.name == 'sayBoo' and method.jclass.name == 'CJ/test/Boo':
