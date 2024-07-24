@@ -9,10 +9,12 @@ public class test {
         boo.sayBoo();
 
         GPIO gpio = new GPIO();
-
+        gpio.read(4);
+        gpio.pullUp(4);
+        
         while (true) {
-            gpio.write(13, true);
-            gpio.write(13, false);
+            boolean isOn = gpio.read(4);
+            gpio.write(13, !isOn);
         }
     }
 }

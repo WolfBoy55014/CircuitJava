@@ -7,4 +7,7 @@ public class GPIO {
     }
 
     public void write(int pin, boolean value) { }
+
+    public void pullUp(int pin) { }
+    public void pullDown(int pin) { }
 }

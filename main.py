@@ -27,7 +27,7 @@ def main():
     supervisor.runtime.autoreload = False
 
     # Set Clock Speed
-    microcontroller.cpu.frequency = 130 * 1000000 # 125000000
+    microcontroller.cpu.frequency = 100 * 1000000 # 125000000
     print("Clock Speed:", microcontroller.cpu.frequency)
     print("CPU Temp:", microcontroller.cpu.temperature)
     

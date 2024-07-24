@@ -5,8 +5,7 @@ from runtime.jclass import ClassLoader, JString, JDouble, JLong, JFloat, JIntege
 from runtime.jobject import JArray, JRef
 from base.utils import print_utils, common_utils, error_handler
 from jthread.jthread import JThread
-from jboard import GPIO
-gpio = GPIO()
+import jboard 
 
 '''
 以下指令没有测试
@@ -77,7 +76,7 @@ class Instruction(object):
 
     def execute_wrapper(self, frame):
         hex_code = '%x' % self.code
-        print_utils.print_jvm_status('execute ins: ' + self.name + '  ' + hex_code + '   ' + str(frame) + '\n')
+        print_utils.print_jvm_status('execute ins: ' + self.name + '  ' + hex_code + '   ' + str(frame.method.name) + '\n')
         self.execute(frame)
 
     def execute(self, frame):
@@ -1866,24 +1865,13 @@ class INVOKEVIRTUAL(Instruction):
         self.__hack_println(n_frame, method)
         # 处理 thread
         self.__hack_thread(n_frame, method)
-        # hack boo
-        self.__hack_boo(n_frame, method)
         # hack GPIO
-        self.__hack_gpio(n_frame, method)
+        self.__hack_board(n_frame, method)
         
-    def __hack_gpio(self, n_frame, method):
-        if method.name == 'write' and method.jclass.name == 'board/GPIO':
-            if method.descriptor == '(IZ)V':
-                pin = n_frame.local_vars.get_int(1)
-                value = n_frame.local_vars.get_int(2)
-                gpio.write(pin, value) 
-                
-        
-    def __hack_boo(self, n_frame, method):
-        if method.name == 'sayBoo' and method.jclass.name == 'CJ/test/Boo':
-            if method.descriptor == '()V':
-                print_utils.StreamPrinter.append_msg(n_frame.thread, 'Boo!')
-
+    def __hack_board(self, n_frame, method):
+        if 'board' in method.jclass.name:
+           jboard.__run_board_class(n_frame, method)
+           
     def __hack_thread(self, n_frame, method):
         jthis = n_frame.local_vars.get_ref(0)
         if method.name == 'start' and jthis.handler.obj.jclass.super_class_name == 'java/lang/Thread':
