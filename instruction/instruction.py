@@ -1864,6 +1864,13 @@ class INVOKEVIRTUAL(Instruction):
         self.__hack_println(n_frame, method)
         # 处理 thread
         self.__hack_thread(n_frame, method)
+        # hack boo
+        self.__hack_boo(n_frame, method)
+        
+    def __hack_boo(self, n_frame, method):
+        if method.name == 'sayBoo' and method.jclass.name == 'CJ/test/Boo':
+            if method.descriptor == '()V':
+                print_utils.StreamPrinter.append_msg(n_frame.thread, 'Boo!')
 
     def __hack_thread(self, n_frame, method):
         jthis = n_frame.local_vars.get_ref(0)

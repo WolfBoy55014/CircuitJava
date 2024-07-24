@@ -16,7 +16,7 @@ def parse_params():
     #     print('eg: python Zvm.py main')
     #     print('eg: python Zvm.py main.class')
     #     return None
-    name = "test/forkbomb"
+    name = "test/test"
     if name.endswith('.class'):
         name = name[:name.find('.class')]
     return name
