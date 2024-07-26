@@ -9,16 +9,16 @@ public class Main {
         boo.sayBoo();
 
         GPIO gpio = new GPIO();
-        gpio.read(4);
+        gpio.dRead(4);
         gpio.pullUp(4);
 
         while (true) {
-            boolean isOn = !gpio.read(4);
+            boolean isOn = !gpio.dRead(4);
             while (isOn) {
-                isOn = !gpio.read(4);
+                isOn = !gpio.dRead(4);
 
-                gpio.write(13, true);
-                gpio.write(13, false);
+                gpio.dWrite(13, true);
+                gpio.dWrite(13, false);
             }
         }
     }

@@ -5,45 +5,49 @@ import jvm.base.utils.error_handler as error_handler
 
 def __run_board_class(n_frame, method):
     #print("Running board class", method.jclass.name, method.name, method.descriptor)
-    if method.name == 'write' and method.jclass.name == 'board/GPIO':
-            if method.descriptor == '(IZ)V':
-                pin = n_frame.local_vars.get_int(1)
-                value = n_frame.local_vars.get_int(2)
-                gpio.dWrite(pin, value)
-    if method.name == 'read' and method.jclass.name == 'board/GPIO':
-            if method.descriptor == '(I)Z':
-                pin = n_frame.local_vars.get_int(1)
-                n_frame.operand_stack.push_int(gpio.dRead(pin))
-                n_frame.pc += 1
-    if method.name == 'pullUp' and method.jclass.name == 'board/GPIO':
-            if method.descriptor == '(I)V':
-                pin = n_frame.local_vars.get_int(1)
-                gpio.pullUp(pin)
-    if method.name == 'pullDown' and method.jclass.name == 'board/GPIO':
-            if method.descriptor == '(I)V':
-                pin = n_frame.local_vars.get_int(1)
-                gpio.pullDown(pin)
-    if method.name == 'sayBoo' and method.jclass.name == 'CJ/test/Boo':
-            if method.descriptor == '()V':
-                print_utils.StreamPrinter.append_msg(n_frame.thread, 'Boo!')
+    if is_method(method, 'dWrite', 'board/GPIO', '(IZ)V'):
+        pin = n_frame.local_vars.get_int(1)
+        value = n_frame.local_vars.get_int(2)
+        gpio.dWrite(pin, value)
+
+    if is_method(method, 'dRead', 'board/GPIO', '(I)Z'):
+        pin = n_frame.local_vars.get_int(1)
+        n_frame.operand_stack.push_int(gpio.dRead(pin))
+        n_frame.pc += 1
+
+    if is_method(method, 'pullUp', 'board/GPIO', '(I)V'):
+        pin = n_frame.local_vars.get_int(1)
+        gpio.pullUp(pin)
+
+    if is_method(method, 'pullDown', 'board/GPIO', '(I)V'):
+        pin = n_frame.local_vars.get_int(1)
+        gpio.pullDown(pin)
+
+    if is_method(method, 'sayBoo', 'board/test/Boo', '()V'):
+        print_utils.StreamPrinter.append_msg(n_frame.thread, 'Boo!')
+
+def is_method(method, name, class_name, descriptor):
+    return method.name == name and method.jclass.name == class_name and method.descriptor == descriptor
 
 def _int_2_pin(pin_id):
-    if pin_id == 1:
-        _pin = board.D1
+    if pin_id == 0:
+        _pin = board.TX
+    elif pin_id == 1:
+        _pin = board.RX
     elif pin_id == 2:
-        _pin = board.D2
+        _pin = board.SDA
     elif pin_id == 3:
-        _pin = board.D3
+        _pin = board.SCL
     elif pin_id == 4:
         _pin = board.BUTTON
-    elif pin_id == 5:
-        _pin = board.D5
+    # elif pin_id == 5:
+    #     _pin = board.D5
     elif pin_id == 6:
-        _pin = board.D6
+        _pin = board.D4
     elif pin_id == 7:
-        _pin = board.D7
+        _pin = board.D5
     elif pin_id == 8:
-        _pin = board.D8
+        _pin = board.D6
     elif pin_id == 9:
         _pin = board.D9
     elif pin_id == 10:
@@ -54,38 +58,38 @@ def _int_2_pin(pin_id):
         _pin = board.D12
     elif pin_id == 13:
         _pin = board.D13
-    elif pin_id == 14:
-        _pin = board.D14
-    elif pin_id == 15:
-        _pin = board.D15
+    # elif pin_id == 14:
+    #     _pin = board.D14
+    # elif pin_id == 15:
+    #     _pin = board.D15
     elif pin_id == 16:
-        _pin = board.D16
-    elif pin_id == 17:
-        _pin = board.D17
+        _pin = board.NEOPIXEL
+    # elif pin_id == 17:
+    #     _pin = board.D17
     elif pin_id == 18:
-        _pin = board.D18
+        _pin = board.SCK
     elif pin_id == 19:
-        _pin = board.D19
+        _pin = board.MOSI
     elif pin_id == 20:
-        _pin = board.D20
-    elif pin_id == 21:
-        _pin = board.D21
-    elif pin_id == 22:
-        _pin = board.D22
-    elif pin_id == 23:
-        _pin = board.D23
+        _pin = board.MISO
+    # elif pin_id == 21:
+    #     _pin = board.D21
+    # elif pin_id == 22:
+    #     _pin = board.D22
+    # elif pin_id == 23:
+    #     _pin = board.D23
     elif pin_id == 24:
         _pin = board.D24
     elif pin_id == 25:
         _pin = board.D25
     elif pin_id == 26:
-        _pin = board.D26
+        _pin = board.A0
     elif pin_id == 27:
-        _pin = board.D27
+        _pin = board.A1
     elif pin_id == 28:
-        _pin = board.D28
+        _pin = board.A2
     elif pin_id == 29:
-        _pin = board.D29
+        _pin = board.A3
     else:
         print("That Pin Does not exist!")
     return _pin
@@ -145,5 +149,5 @@ class GPIO:
             error_handler.rise_runtime_error("Pin {} is not initialized before setting pulldown".format(pin_id))
         
         pin.pull = digitalio.Pull.DOWN
-
+    
 gpio = GPIO()
