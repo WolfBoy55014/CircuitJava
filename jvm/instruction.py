@@ -1,11 +1,11 @@
 # coding=utf-8
 
-from runtime.thread import Frame
-from runtime.jclass import ClassLoader, JString, JDouble, JLong, JFloat, JInteger
-from runtime.jobject import JArray, JRef
-from base.utils import print_utils, common_utils, error_handler
-from jthread.jthread import JThread
-import jboard 
+from jvm.runtime.thread import Frame
+from jvm.runtime.jclass import ClassLoader, JString, JDouble, JLong, JFloat, JInteger
+from jvm.runtime.jobject import JArray, JRef
+from jvm.base.utils import print_utils, common_utils, error_handler
+from jvm.jthread.jthread import JThread
+import jvm.Jboard as jboard
 
 '''
 以下指令没有测试

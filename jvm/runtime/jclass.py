@@ -1,11 +1,11 @@
 # coding=utf-8
 
-from base.utils import common_utils, print_utils
-from java_class.class_file import *
-from java_class.class_parser import ClassParser
-from runtime.thread import Slot
-from runtime.heap import Heap
-from base.jvm_config import jdk_path
+from jvm.base.utils import common_utils, print_utils
+from jvm.java_class.class_file import *
+from jvm.java_class.class_parser import ClassParser
+from jvm.runtime.thread import Slot
+from jvm.runtime.heap import Heap
+from jvm.base.jvm_config import jdk_path
 
 import os
 

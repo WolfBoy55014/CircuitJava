@@ -1,9 +1,9 @@
 # coding=utf-8
 
 
-from base.utils import error_handler
-from jgc.gc import GC
-from base.jvm_config import heap_size
+from jvm.base.utils import error_handler
+from jvm.jgc.gc import GC
+from jvm.base.jvm_config import heap_size
 
 DEF_LENGTH = heap_size
 

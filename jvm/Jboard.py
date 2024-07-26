@@ -1,7 +1,7 @@
 import digitalio
 import board
-import base.utils.print_utils as print_utils
-import base.utils.error_handler as error_handler
+import jvm.base.utils.print_utils as print_utils
+import jvm.base.utils.error_handler as error_handler
 
 def __run_board_class(n_frame, method):
     #print("Running board class", method.jclass.name, method.name, method.descriptor)

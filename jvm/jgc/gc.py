@@ -1,8 +1,8 @@
 # coding=utf-8
 
-from base.utils import print_utils
-from runtime.thread import Thread
-import runtime
+from jvm.base.utils import print_utils
+from jvm.runtime.thread import Thread
+import jvm.runtime
 
 #import threading
 

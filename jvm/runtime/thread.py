@@ -1,8 +1,8 @@
 # coding=utf-8
 
-from base.stack import Stack
-from base.utils.print_utils import print_jvm_status
-import runtime
+from jvm.base.stack import Stack
+from jvm.base.utils.print_utils import print_jvm_status
+import jvm.runtime as runtime
 import struct
 
 

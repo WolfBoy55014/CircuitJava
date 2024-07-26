@@ -1,25 +1,14 @@
 # coding=utf-8
 
-import path_import
+import jvm.path_import
 
-from runtime.jclass import ClassLoader
-from interpreter import interpreter
+from jvm.runtime.jclass import ClassLoader
+from jvm.interpreter import interpreter
 
 import supervisor
 import microcontroller
 import time
-
-def parse_params():
-    # args = sys.argv
-    # if len(args) <= 1:
-    #     print('use: python Zvm.py xx[.class]')
-    #     print('eg: python Zvm.py main')
-    #     print('eg: python Zvm.py main.class')
-    #     return None
-    name = "test/test"
-    if name.endswith('.class'):
-        name = name[:name.find('.class')]
-    return name
+from os import getenv
 
 
 def main():
@@ -31,7 +20,7 @@ def main():
     print("Clock Speed:", microcontroller.cpu.frequency)
     print("CPU Temp:", microcontroller.cpu.temperature)
     
-    class_file = parse_params()
+    class_file = getenv("MAIN_JAVA_FILE", "Main")
     if class_file is None:
         return
     loader = ClassLoader()

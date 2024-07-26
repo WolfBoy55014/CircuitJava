@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from base.utils.print_utils import print_jvm_status
+from jvm.base.utils.print_utils import print_jvm_status
 
 
 class Stack(object):

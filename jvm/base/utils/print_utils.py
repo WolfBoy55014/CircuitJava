@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from base import jvm_config
+from jvm.base import jvm_config
 
 
 def print_error(msg):

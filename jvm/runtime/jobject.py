@@ -1,8 +1,8 @@
 # coding=utf-8
 
-from runtime.thread import Slot
-from base.utils import error_handler
-import runtime.heap as heap
+from jvm.runtime.thread import Slot
+from jvm.base.utils import error_handler
+import jvm.runtime.heap as heap
 
 
 # 对应 java 中的实例对象

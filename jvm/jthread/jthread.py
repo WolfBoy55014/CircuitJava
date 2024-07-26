@@ -1,7 +1,7 @@
 # coding=utf-8
 
 
-from runtime.jclass import Method
+from jvm.runtime.jclass import Method
 #import threading
 
 
@@ -18,7 +18,7 @@ class NativeThread():
         self.method = method
 
     def run(self):
-        from interpreter.interpreter import Interpreter
+        from jvm.interpreter.interpreter import Interpreter
         Interpreter.exec_method(self.method)
 
 

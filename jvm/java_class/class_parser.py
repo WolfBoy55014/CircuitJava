@@ -1,7 +1,7 @@
 # coding=utf-8
 
-from java_class.class_file import *
-from base.utils import common_utils
+from jvm.java_class.class_file import *
+from jvm.base.utils import common_utils
 
 
 class ClassReader:
