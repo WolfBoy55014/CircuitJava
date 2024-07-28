@@ -25,4 +25,4 @@ CircuitJava is not perfect and can't do the following *yet*:
 3. CircuitJava can't run jar files
 
 ## If You Run Into Issues...
-File an Issue! I'd love to help you add your microcontroller to the list, or work on fixing the holes in the JVM. Feel free to fork and help too! My knowledge of JVM's is not perfect, so I'd really appreciate any insite you have.
+File an Issue! I'd love to help you configure CircuitJava for your microcontroller, or work on fixing the holes in the JVM. Feel free to fork and help too! My knowledge of JVM's is not perfect, so I'd really appreciate any insight you have.
