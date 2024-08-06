@@ -2,6 +2,7 @@
 
 from jvm.runtime.thread import Thread, Frame
 from jvm.base.utils import print_utils
+from jvm.base import jvm_config
 from jvm.interpreter.code_parser import CodeParser
 from jvm.instruction import instruction
 from jvm.jgc.gc import GC
@@ -20,6 +21,19 @@ class Interpreter(object):
         frame = Frame(thread, method)
         thread.add_frame(frame)
         code_parser = CodeParser(method.code)
+        if False:
+            print_utils.print_jvm_status('\n=================== instruction dump =====================')
+            while True:
+                ins_read = 0
+                try:
+                    ins_code = code_parser.read_code()
+                    ins = instruction.get_instruction(ins_code)
+                    print(ins.name)
+                    ins_read += 1
+                except:
+                    code_parser.pc -= ins_read
+                    break
+        
         while True:
             if not thread.has_frame():
                 break

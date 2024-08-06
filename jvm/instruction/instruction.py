@@ -2529,8 +2529,10 @@ class NEW(Instruction):
             frame.method.jclass.class_loader = class_loader
         constant_pool = frame.method.jclass.constant_pool
         ref = constant_pool.constants[self.index]
+        print_utils.print_jvm_status("make new: " + ref.class_name)
         jclass = class_loader.load_class(ref.class_name)
-        ref = JRef.new_object(jclass)  # JObject.new_object() 返回的是真实实例对象  JRef.new_object() 返回的是引用，并且会吧 object 放入 gc 堆
+        ref = JRef.new_object(jclass)  # JObject.new_object() returns a real instance object. JRef.new_object() returns a reference and puts the object into the gc heap.
+        print("==========================================", ref.handler.obj.jclass.name)
         frame.operand_stack.push_ref(ref)
 
 
