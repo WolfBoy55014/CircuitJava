@@ -2,7 +2,6 @@
 
 import os
 from shutil import copytree, ignore_patterns, rmtree, copy
-print(os.listdir())
 
 # List of files that should not be compiled
 python_blacklist = ["build.py", "main.py"]

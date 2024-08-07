@@ -21,19 +21,6 @@ class Interpreter(object):
         frame = Frame(thread, method)
         thread.add_frame(frame)
         code_parser = CodeParser(method.code)
-        if False:
-            print_utils.print_jvm_status('\n=================== instruction dump =====================')
-            while True:
-                ins_read = 0
-                try:
-                    ins_code = code_parser.read_code()
-                    ins = instruction.get_instruction(ins_code)
-                    print(ins.name)
-                    ins_read += 1
-                except:
-                    code_parser.pc -= ins_read
-                    break
-        
         while True:
             if not thread.has_frame():
                 break

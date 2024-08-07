@@ -2532,7 +2532,6 @@ class NEW(Instruction):
         print_utils.print_jvm_status("make new: " + ref.class_name)
         jclass = class_loader.load_class(ref.class_name)
         ref = JRef.new_object(jclass)  # JObject.new_object() returns a real instance object. JRef.new_object() returns a reference and puts the object into the gc heap.
-        print("==========================================", ref.handler.obj.jclass.name)
         frame.operand_stack.push_ref(ref)
 
 
