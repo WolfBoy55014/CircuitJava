@@ -2,6 +2,15 @@
 
 from jvm.base import jvm_config
 
+_ORANGE = f"\u001b[38;2;{255};{100};{0}m"
+_BLUE = f"\u001b[38;2;{0};{100};{255}m"
+_DEFAULT = f"\u001b[0m"
+
+def printo(msg):
+    print(_ORANGE + str(msg) + _DEFAULT)
+
+def printb(msg):
+    print(_BLUE + str(msg) + _DEFAULT)
 
 def print_error(msg):
     print("error: " + msg)

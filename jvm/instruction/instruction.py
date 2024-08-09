@@ -1,9 +1,11 @@
 # coding=utf-8
 
 from jvm.runtime.thread import Frame
-from jvm.runtime.jclass import ClassLoader, JString, JDouble, JLong, JFloat, JInteger
+from jvm.runtime.jclass import ClassLoader, JString, JDouble, JLong, JFloat, JInteger, Method
+from jvm.runtime.nclass import NativeClassLoader
 from jvm.runtime.jobject import JArray, JRef
 from jvm.base.utils import print_utils, common_utils, error_handler
+from jvm.base.utils.print_utils import printb, printo
 from jvm.jthread.jthread import JThread
 import jvm.Jboard as jboard
 
@@ -1827,6 +1829,18 @@ class INVOKEVIRTUAL(Instruction):
         if n_method_ref.class_name == 'java/lang/Object':
             return
         print_utils.print_jvm_status('invokevirtual: ' + n_method_ref.name)
+        
+        if n_method_ref.class_name in NativeClassLoader.native_classes:
+            printb(f'Loading Native Method: {n_method_ref.name} in {n_method_ref.class_name}')
+            printo(f'Frames Operand Stack Contents: {frame.operand_stack.get_all_data()}')
+            arg_desc = Method.get_arg_desc(n_method_ref.descriptor)
+            ref = frame.operand_stack.top(len(arg_desc))
+            printb(f'Data On Stack: {ref.handler.obj}')
+            nclass = ref.handler.obj
+            nclass.invoke_method(frame, n_method_ref.name, n_method_ref.descriptor)
+            return
+            # raise Exception("Dev Must Do Stuff")
+
         # 主要是为了获取参数个数
         n_method = n_method_ref.resolve_method_with_super(frame.method.jclass.class_loader)
         arg_desc = n_method.arg_desc
@@ -2523,12 +2537,21 @@ class NEW(Instruction):
         self.index = (index1 << 8) | index2
 
     def execute(self, frame):
+        constant_pool = frame.method.jclass.constant_pool
+        ref = constant_pool.constants[self.index]
+        
+        if ref.class_name in NativeClassLoader.native_classes:
+            printo("Making new Native Class: " + ref.class_name)
+            nclass_loader = NativeClassLoader.default_class_loader()
+            nclass = nclass_loader.load_class(ref.class_name)
+            ref = JRef.new_native_object(nclass)
+            frame.operand_stack.push_ref(ref)
+            return
+
         class_loader = frame.method.jclass.class_loader
         if class_loader is None:
             class_loader = ClassLoader()
             frame.method.jclass.class_loader = class_loader
-        constant_pool = frame.method.jclass.constant_pool
-        ref = constant_pool.constants[self.index]
         print_utils.print_jvm_status("make new: " + ref.class_name)
         jclass = class_loader.load_class(ref.class_name)
         ref = JRef.new_object(jclass)  # JObject.new_object() returns a real instance object. JRef.new_object() returns a reference and puts the object into the gc heap.

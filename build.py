@@ -40,3 +40,8 @@ copy(working_dir + "/main.py", build_dir + "/main.py")
 
 for file in python_files:
     os.system(f"mpy-cross.exe {working_dir}/{file} -o {build_dir}/{file.replace('.py', '.mpy')}")
+
+    # [BETA] for RP2 Based Microcontrollers
+    # if (os.system(f"mpy-cross.exe {working_dir}/{file} -o {build_dir}/{file.replace('.py', '.mpy')} -march=armv6m -X emit=native") != 0):
+    #     print(f"File {file} will not be compiled to Native code. Compiling to bytecode instead")
+    #     os.system(f"mpy-cross.exe {working_dir}/{file} -o {build_dir}/{file.replace('.py', '.mpy')}")
