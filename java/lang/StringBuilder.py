@@ -1,25 +1,22 @@
-instances = {}
-methods = {}
+from jvm.runtime.nclass import NativeClass
 
-methods["()V"] = "init0"
-methods["(Ljava/lang/String;)V"] = "init1"
-methods["(I)V"] = "init2"
-methods["(Ljava/lang/String;)Ljava/lang/StringBuilder;"] = "append"
-methods["(C)Ljava/lang/StringBuilder;"] = "append"
-methods["(I)Ljava/lang/StringBuilder;"] = "append"
-methods["(J)Ljava/lang/StringBuilder;"] = "append"
-methods["(D)Ljava/lang/StringBuilder;"] = "append"
-methods["(Z)Ljava/lang/StringBuilder;"] = "append"
-methods["(F)Ljava/lang/StringBuilder;"] = "append"
-
-def new(index):
-    instances[index] = StringBuilder()
-
-def get_method_by_desc(desc):
-    return getattr(instances[desc[0]], desc[1])
-
-
-class StringBuilder:
+class StringBuilder(NativeClass):
+    def __init__(self):
+        self.name = "java/lang/StringBuilder"
+        self.methods = {
+            "<init>-()V": self.init0,
+            "<init>-(Ljava/lang/String;)V": self.init1,
+            "<init>-(I)V": self.init2,
+            "append-(Ljava/lang/String;)Ljava/lang/StringBuilder;": self.append,
+            "append-(C)Ljava/lang/StringBuilder;": self.append,
+            "append-(I)Ljava/lang/StringBuilder;": self.append,
+            "append-(J)Ljava/lang/StringBuilder;": self.append,
+            "append-(D)Ljava/lang/StringBuilder;": self.append,
+            "append-(Z)Ljava/lang/StringBuilder;": self.append,
+            "append-(F)Ljava/lang/StringBuilder;": self.append,
+            "toString-()Ljava/lang/String;": self.toString,
+        }
+    
     def init0(self):
         self.value = ""
         

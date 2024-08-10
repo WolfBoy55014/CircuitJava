@@ -7,10 +7,12 @@ _BLUE = f"\u001b[38;2;{0};{100};{255}m"
 _DEFAULT = f"\u001b[0m"
 
 def printo(msg):
-    print(_ORANGE + str(msg) + _DEFAULT)
+    if jvm_config.log_jvm_status:
+        print(_ORANGE + str(msg) + _DEFAULT)
 
 def printb(msg):
-    print(_BLUE + str(msg) + _DEFAULT)
+    if jvm_config.log_jvm_status:
+        print(_BLUE + str(msg) + _DEFAULT)
 
 def print_error(msg):
     print("error: " + msg)

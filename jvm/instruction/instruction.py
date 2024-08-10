@@ -1783,6 +1783,20 @@ class INVOKESPECIAL(Instruction):
         if n_method_ref.class_name == 'java/lang/Object':
             return
         print_utils.print_jvm_status('invokespecial: ' + n_method_ref.name)
+
+        if n_method_ref.class_name in NativeClassLoader.native_classes:
+            printb(f'Loading Native Method: {n_method_ref.name} in {n_method_ref.class_name}')
+            printo(f'Frames Operand Stack Contents: {frame.operand_stack.get_all_data()}')
+            arg_desc = Method.get_arg_desc(n_method_ref.descriptor)
+            printb(frame.operand_stack.size())
+            ref = frame.operand_stack.top(len(arg_desc))
+            printb(frame.operand_stack.size())
+            printb(f'Data On Stack: {ref.handler.obj}')
+            nclass = ref.handler.obj
+            nclass.invoke_method(frame, n_method_ref.name, n_method_ref.descriptor)
+            return
+            # raise Exception("Dev Must Do Stuff")
+        
         n_method = n_method_ref.resolve_method(frame.method.jclass.class_loader)
         n_frame = Frame(frame.thread, n_method)
         frame.thread.add_frame(n_frame)
@@ -1834,7 +1848,9 @@ class INVOKEVIRTUAL(Instruction):
             printb(f'Loading Native Method: {n_method_ref.name} in {n_method_ref.class_name}')
             printo(f'Frames Operand Stack Contents: {frame.operand_stack.get_all_data()}')
             arg_desc = Method.get_arg_desc(n_method_ref.descriptor)
+            printb(frame.operand_stack.size())
             ref = frame.operand_stack.top(len(arg_desc))
+            printb(frame.operand_stack.size())
             printb(f'Data On Stack: {ref.handler.obj}')
             nclass = ref.handler.obj
             nclass.invoke_method(frame, n_method_ref.name, n_method_ref.descriptor)

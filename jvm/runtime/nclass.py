@@ -1,9 +1,10 @@
-from jvm.runtime.jclass import Method
+from jvm.runtime.jclass import Method, JString
+from jvm.runtime.jobject import JRef
 from jvm.base.utils.print_utils import printb, printo
 
 class NativeClassLoader(object):
     default_loader = None
-    native_classes = ["board/based/Boo"]
+    native_classes = ["board/based/Boo", "java/lang/StringBuilder"]
     
     def __init__(self):
         self.loaded_classes = {}
@@ -67,12 +68,36 @@ class NativeClass():
         try:
             return self.methods[f'{name}-{desc}']
         except:
-            raise Exception(f'Native method {name}{desc} not found')
+            raise Exception(f'Native method {name}-{desc} not found')
 
     def invoke_method(self, n_frame, name, desc):
         args_desc = NativeClass.get_arg_desc(desc)
         args = NativeClass.get_args(n_frame, args_desc)
         method = self.get_method_name_desc(name, desc)
-        return method(*args)
+        n_frame.operand_stack.pop()
+        result = method(*args)
+        if result is not None:
+            # Because we never made a new frame at invocation, we can still use `n_frame`
+            r_type = desc.split(')')[-1]
+            if r_type == 'I' or r_type == 'S' or r_type == 'Z' or r_type == 'C' or r_type == 'B':
+                n_frame.operand_stack.push_int(result)
+            elif r_type == 'J':
+                n_frame.operand_stack.push_long(result)
+            elif r_type == 'F':
+                n_frame.operand_stack.push_float(result)
+            elif r_type == 'D':
+                n_frame.operand_stack.push_double(result)
+            elif r_type == "Ljava/lang/String;":
+                jstring = JString()
+                jstring.data = str(result)
+                n_frame.operand_stack.push_ref(jstring)
+            elif r_type[0] == 'L' and r_type[1:-1] in NativeClassLoader.native_classes:
+                ref = JRef.new_native_object(self)
+                n_frame.operand_stack.push_ref(ref)
+            elif r_type[0] == 'L':
+                raise Exception('TODO in nclass.py #1, returning object')
+            else:
+                raise Exception(f'Native method {name}-{desc} returned unexpected type {r_type}')
+        return
         
     
