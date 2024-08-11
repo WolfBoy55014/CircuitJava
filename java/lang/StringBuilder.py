@@ -14,7 +14,20 @@ class StringBuilder(NativeClass):
             "append-(D)Ljava/lang/StringBuilder;": self.append,
             "append-(Z)Ljava/lang/StringBuilder;": self.append,
             "append-(F)Ljava/lang/StringBuilder;": self.append,
-            "toString-()Ljava/lang/String;": self.toString,
+            "delete-(II)Ljava/lang/StringBuilder;": self.delete,
+            "deleteCharAt-(I)Ljava/lang/StringBuilder;": self.deleteCharAt,
+            "replace-(IILjava/lang/String;)Ljava/lang/StringBuilder;": self.replace,
+            "insert-(ILjava/lang/String;)Ljava/lang/StringBuilder;": self.insert,
+            "insert-(IC)Ljava/lang/StringBuilder;": self.insert,
+            "insert-(II)Ljava/lang/StringBuilder;": self.insert,
+            "insert-(IJ)Ljava/lang/StringBuilder;": self.insert,
+            "insert-(ID)Ljava/lang/StringBuilder;": self.insert,
+            "insert-(IZ)Ljava/lang/StringBuilder;": self.insert,
+            "insert-(IF)Ljava/lang/StringBuilder;": self.insert,
+            "indexOf-(Ljava/lang/String;)I": self.index_of,
+            "lastIndexOf-(Ljava/lang/String;)I": self.last_index_of,
+            "reverse-()Ljava/lang/StringBuilder;": self.reverse,
+            "toString-()Ljava/lang/String;": self.toString
         }
     
     def init0(self):
