@@ -88,6 +88,12 @@ class JRef(object):
         return jref
 
     @staticmethod
+    def new_native_object(object):
+        jref = JRef(object)
+        heap.Heap.new_ref(jref)
+        return jref
+
+    @staticmethod
     def new_array(jclass, atype, count):
         array = JArray.new_array(jclass, atype, count)
         jref = JRef(array)

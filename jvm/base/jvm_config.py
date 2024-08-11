@@ -2,7 +2,8 @@
 
 import os
 
-log_jvm_status = False 
+log_jvm_status = os.getenv("LOG_JVM_STATUS", "FALSE") == "TRUE"
+# log_jvm_status = False
 # log_jvm_status = True
 
 print_in_real_time = True

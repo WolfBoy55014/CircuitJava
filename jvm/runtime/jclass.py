@@ -490,6 +490,7 @@ class ClassLoader(object):
         self._loading_classes = []
         self._loaded_classes = {}
         self.pkg_path = jdk_path
+        self.native_classes = ["java.lang.StringBuilder", "board.GPIO", "board.test.Boo"]
         self.hack()
 
     def get_all_loaded_class(self):

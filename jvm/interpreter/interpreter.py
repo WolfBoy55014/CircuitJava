@@ -2,6 +2,7 @@
 
 from jvm.runtime.thread import Thread, Frame
 from jvm.base.utils import print_utils
+from jvm.base import jvm_config
 from jvm.interpreter.code_parser import CodeParser
 from jvm.instruction import instruction
 from jvm.jgc.gc import GC
