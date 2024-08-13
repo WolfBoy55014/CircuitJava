@@ -2,13 +2,14 @@
 
 from jvm.runtime.thread import Slot
 from jvm.base.utils import error_handler
-import jvm.runtime.heap as heap
+from jvm.runtime import heap
 
 
 # 对应 java 中的实例对象
 class JObject(object):
     TYPE_OBJ = 0
     TYPE_ARRAY = 1
+    TYPE_NOBJ = 2
 
     def __init__(self):
         self.type = JObject.TYPE_OBJ

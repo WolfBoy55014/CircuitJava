@@ -2,7 +2,7 @@
 
 from jvm.base.utils import print_utils
 from jvm.runtime.thread import Thread
-import jvm.runtime
+from jvm.runtime import jobject
 
 #import threading
 
@@ -55,24 +55,32 @@ class GCHandler(object):
         for root in roots:
             obj = root.handler.obj
             alive_obj.append(root)
-            if obj.type == runtime.jobject.JObject.TYPE_OBJ:
+            if obj.type == jobject.JObject.TYPE_OBJ:
                 GCHandler.collect_obj_ref(root, alive_obj)
-            elif obj.type == runtime.jobject.JObject.TYPE_ARRAY:
+            elif obj.type == jobject.JObject.TYPE_ARRAY:
                 GCHandler.collect_array_ref(root, alive_obj)
+            elif obj.type == jobject.JObject.TYPE_NOBJ:
+                pass
         return alive_obj
 
     @staticmethod
     def collect_obj_ref(ref, alive_obj):
         obj = ref.handler.obj
-        for o in obj.data.values():
-            if isinstance(o, runtime.jobject.JRef):
-                alive_obj.append(o)
-                GCHandler.collect_obj_ref(o, alive_obj)
+        
+        try:
+            for o in obj.data.values():
+                if isinstance(o, jobject.JRef):
+                    alive_obj.append(o)
+                    GCHandler.collect_obj_ref(o, alive_obj)
+                else:
+                    alive_obj.append(o)
+        except:
+            return
 
     @staticmethod
     def collect_array_ref(ref, alive_obj):
         array = ref.handler.obj
-        if array.atype == runtime.jobject.JArray.T_REF:
+        if array.atype == jobject.JArray.T_REF:
             for slot in array.data:
                 aref = slot.ref
                 if aref is not None:
@@ -87,11 +95,11 @@ class GCHandler(object):
             for frame in frames:
                 items = frame.operand_stack.get_all_data()
                 for item in items:
-                    if isinstance(item.data, runtime.jobject.JRef):
+                    if isinstance(item.data, jobject.JRef):
                         gc_root.append(item.data)
                 vars = frame.local_vars.get_items()
                 for var in vars:
-                    if isinstance(var.ref, runtime.jobject.JRef):
+                    if isinstance(var.ref, jobject.JRef):
                         gc_root.append(var.ref)
         return gc_root
 

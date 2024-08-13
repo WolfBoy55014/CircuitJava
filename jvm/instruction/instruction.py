@@ -1118,6 +1118,7 @@ class ILOAD_N(Instruction):
     def execute(self, frame):
         index = self.get_index()
         local_vars = frame.local_vars
+        printo([slot.num for slot in local_vars.get_items()])
         operand_stack = frame.operand_stack
         value = local_vars.get_int(index)
         operand_stack.push_int(value)
@@ -1786,7 +1787,7 @@ class INVOKESPECIAL(Instruction):
 
         if n_method_ref.class_name in NativeClassLoader.native_classes:
             printb(f'Loading Native Method: {n_method_ref.name} in {n_method_ref.class_name}')
-            printo(f'Frames Operand Stack Contents: {frame.operand_stack.get_all_data()}')
+            printo(f'Frames Operand Stack Contents: {[entry.data for entry in frame.operand_stack.get_all_data()]}')
             arg_desc = Method.get_arg_desc(n_method_ref.descriptor)
             printb(frame.operand_stack.size())
             ref = frame.operand_stack.top(len(arg_desc))
@@ -1968,23 +1969,27 @@ class INVOKESTATIC(Instruction):
         frame.thread.add_frame(n_frame)
         arg_desc = n_method.arg_desc
         i = len(arg_desc)
+        printo('arg_desc: ' + str(arg_desc))
+        printb([entry.data for entry in frame.operand_stack.get_all_data()])
+        i = 0
         for arg in arg_desc:
-            i -= 1
+            printo(f'Pushing an {arg} into slot {i} of {n_frame.local_vars.size()}')
             if arg == 'I' or arg == 'S' or arg == 'Z' or arg == 'C':
-                value = frame.operand_stack.pop_int()
+                value = frame.operand_stack.pop_int(0)
                 n_frame.local_vars.add_int(i, value)
             elif arg == 'J':
-                value = frame.operand_stack.pop_long()
+                value = frame.operand_stack.pop_long(0)
                 n_frame.local_vars.add_long(i, value)
             elif arg == 'F':
-                value = frame.operand_stack.pop_float()
+                value = frame.operand_stack.pop_float(0)
                 n_frame.local_vars.add_float(i, value)
             elif arg == 'D':
-                value = frame.operand_stack.pop_double()
+                value = frame.operand_stack.pop_double(0)
                 n_frame.local_vars.add_double(i, value)
             elif arg[0] == 'L':
-                jref = frame.operand_stack.pop_ref()
+                jref = frame.operand_stack.pop_ref(0)
                 n_frame.local_vars.add_ref(i, jref)
+            i += 1
 
 
 class IRETURN(Instruction):

@@ -1,10 +1,10 @@
 from jvm.runtime.jclass import Method, JString
-from jvm.runtime.jobject import JRef
+from jvm.runtime.jobject import JRef, JObject
 from jvm.base.utils.print_utils import printb, printo
 
 class NativeClassLoader(object):
     default_loader = None
-    native_classes = ["board/based/Boo", "java/lang/StringBuilder"]
+    native_classes = ["board/based/Boo", "java/lang/StringBuilder", "board/Pin"]
     
     def __init__(self):
         self.loaded_classes = {}
@@ -17,7 +17,7 @@ class NativeClassLoader(object):
 
     def load_class(self, class_name):
         if class_name in self.loaded_classes.keys():
-            return self.loaded_classes[class_name]
+            return self.loaded_classes[class_name]()
         else:
             printb([class_name.split('/')[-1]])
             module = __import__(class_name)
@@ -30,6 +30,7 @@ class NativeClassLoader(object):
 
 class NativeClass():
     def __init__(self):
+        self.type = JObject.TYPE_NOBJ
         self.name = None
         self.methods = {}
         self.fields = {}

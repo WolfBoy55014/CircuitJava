@@ -25,8 +25,8 @@ class Stack(object):
     def peek(self):
         return self.__items[self.size() - 1]
 
-    def pop(self):
-        return self.__items.pop()
+    def pop(self, index=-1):
+        return self.__items.pop(index)
 
     def clear(self):
         self.__items.clear()

@@ -215,8 +215,8 @@ class OperandStack(object):
         entry = Entry(data)
         self.__stack.push(entry)
 
-    def pop(self):
-        ref = self.__stack.pop().data
+    def pop(self, index=-1):
+        ref = self.__stack.pop(index).data
         if isinstance(ref, runtime.jclass.JInteger) or isinstance(ref, runtime.jclass.JFloat) \
                 or isinstance(ref, runtime.jclass.JLong) or isinstance(ref, runtime.jclass.JDouble):
             return ref.data
@@ -230,38 +230,38 @@ class OperandStack(object):
         jint.data = data
         self.push(jint)
 
-    def pop_int(self):
-        return self.pop()
+    def pop_int(self, index=-1):
+        return self.pop(index)
 
     def push_long(self, data):
         jlong = runtime.jclass.JLong()
         jlong.data = data
         self.push(jlong)
 
-    def pop_long(self):
-        return self.pop()
+    def pop_long(self, index=-1):
+        return self.pop(index)
 
     def push_float(self, data):
         jfloat = runtime.jclass.JFloat()
         jfloat.data = data
         self.push(jfloat)
 
-    def pop_float(self):
-        return self.pop()
+    def pop_float(self, index=-1):
+        return self.pop(index)
 
     def push_double(self, data):
         jdouble = runtime.jclass.JDouble()
         jdouble.data = data
         self.push(jdouble)
 
-    def pop_double(self):
-        return self.pop()
+    def pop_double(self, index=-1):
+        return self.pop(index)
 
     def push_ref(self, ref):
         self.push(ref)
 
-    def pop_ref(self):
-        return self.pop()
+    def pop_ref(self, index=-1):
+        return self.pop(index)
 
     def get_all_data(self):
         return self.__stack.items()
