@@ -1989,6 +1989,9 @@ class INVOKESTATIC(Instruction):
             elif arg[0] == 'L':
                 jref = frame.operand_stack.pop_ref(0)
                 n_frame.local_vars.add_ref(i, jref)
+            elif arg[0] == '[':
+                jref = frame.operand_stack.pop_ref(0)
+                n_frame.local_vars.add_ref(i, jref)
             i += 1
 
 

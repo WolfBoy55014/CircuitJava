@@ -253,6 +253,8 @@ class Method(object):
                     desc = ''
                 elif s == 'L':
                     desc += s
+                elif s == '[':
+                    desc += s
             else:
                 if desc[0] == 'L':
                     desc += s

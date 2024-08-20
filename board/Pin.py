@@ -4,7 +4,7 @@ from digitalio import DigitalInOut, Pull, Direction
 from jvm.runtime.jobject import JObject
 import board
 
-_BOARD = "PIPICO"
+_BOARD = "METROESP32S3"
 
 class Pin(NativeClass):
     def __init__(self):
@@ -30,10 +30,11 @@ class Pin(NativeClass):
             return Pin._pipico(pin_id)
         elif _BOARD == "FRP2040":
             return Pin._frp2040(pin_id)
+        elif _BOARD == "METROESP32S3":
+            return Pin._metroesp32s3(pin_id)
         else:
             printb("Board not supported")
             raise Exception("Board not supported")
-
 
     @staticmethod
     def _frp2040(pin_id):
@@ -167,6 +168,69 @@ class Pin(NativeClass):
             print("That Pin Does not exist!")
         return _pin
     
+    @staticmethod
+    def _metroesp32s3(pin_id):
+        if pin_id == 1:
+            _pin = board.A5
+        elif pin_id == 2:
+            _pin = board.D2
+        elif pin_id == 3:
+            _pin = board.D3
+        elif pin_id == 4:
+            _pin = board.D4
+        elif pin_id == 5:
+            _pin = board.D5
+        elif pin_id == 6:
+            _pin = board.D6
+        elif pin_id == 7:
+            _pin = board.D7
+        elif pin_id == 8:
+            _pin = board.D8
+        elif pin_id == 9:
+            _pin = board.D9
+        elif pin_id == 10:
+            _pin = board.D10
+        elif pin_id == 11:
+            _pin = board.D11
+        elif pin_id == 12:
+            _pin = board.D12
+        elif pin_id == 13:
+            _pin = board.D13
+        elif pin_id == 14:
+            _pin = board.A0
+        elif pin_id == 15:
+            _pin = board.A1
+        elif pin_id == 16:
+            _pin = board.A2
+        elif pin_id == 17:
+            _pin = board.A3
+        elif pin_id == 18:
+            _pin = board.A4
+        elif pin_id == 21:
+            _pin = board.MISO
+        elif pin_id == 39:
+            _pin = board.SCK
+        elif pin_id == 40:
+            _pin = board.TX
+        elif pin_id == 41:
+            _pin = board.RX
+        elif pin_id == 42:
+            _pin = board.MOSI
+        elif pin_id == 43:
+            _pin = board.DEBUG_TX
+        elif pin_id == 44:
+            _pin = board.DEBUG_RX
+        elif pin_id == 45:
+            _pin = board.SD_CS
+        elif pin_id == 46:
+            _pin = board.NEOPIXEL
+        elif pin_id == 47:
+            _pin = board.SDA
+        elif pin_id == 48:
+            _pin = board.SCL
+        else:
+            print("That Pin Does not exist!")
+        return _pin
 
     def init(self, isInput, pinID):
         printb(f'Creating Pin {pinID} as {isInput}')

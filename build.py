@@ -6,7 +6,7 @@ from shutil import copytree, ignore_patterns, rmtree, copy2
 # List of files that should not be compiled
 python_blacklist = ["build.py", "main.py", "list_pins.py"]
 # List of files that should not be copied for production
-not_for_production = ['build', '.git', '__pycache__', '.Trashes', ".Trash-1000", "boot_out.txt", "README.md", ".metadata_never_index", "TODO.md", ".vscode", ".fseventsd", "*.py", ".gitattributes", ".gitignore"]
+not_for_production = ['build', '.git', '__pycache__', '.Trashes', ".Trash-1000", "examples", "boot_out.txt", "README.md", ".metadata_never_index", "TODO.md", ".vscode", ".fseventsd", "*.py", ".gitattributes", ".gitignore"]
 
 controller_dir = "D:/"
 working_dir = os.getcwd().replace("\\", "/")
