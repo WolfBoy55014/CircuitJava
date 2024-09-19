@@ -7,7 +7,6 @@ from jvm.runtime.jobject import JArray, JRef
 from jvm.base.utils import print_utils, common_utils, error_handler
 from jvm.base.utils.print_utils import printb, printo
 from jvm.jthread.jthread import JThread
-import jvm.Jboard as jboard
 
 '''
 以下指令没有测试
@@ -741,6 +740,7 @@ class IINC(Instruction):
 
     def execute(self, frame):
         val = frame.local_vars.get_int(self.index)
+        print(f'------------------------------------ {val} += {self.const}, getting {val} from {self.index}')
         val += self.const
         frame.local_vars.add_int(self.index, val)
 
@@ -1437,7 +1437,7 @@ class IMUL(Instruction):
         operand_stack = frame.operand_stack
         val1 = operand_stack.pop_int()
         val2 = operand_stack.pop_int()
-        res = val1 * val2
+        res = val2 * val1
         operand_stack.push_int(res)
 
 
@@ -1449,7 +1449,7 @@ class LMUL(Instruction):
         operand_stack = frame.operand_stack
         val1 = operand_stack.pop_long()
         val2 = operand_stack.pop_long()
-        res = val1 * val2
+        res = val2 * val1
         operand_stack.push_long(res)
 
 
@@ -1461,7 +1461,7 @@ class FMUL(Instruction):
         operand_stack = frame.operand_stack
         val1 = operand_stack.pop_float()
         val2 = operand_stack.pop_float()
-        res = val1 * val2
+        res = val2 * val1
         operand_stack.push_float(res)
 
 
@@ -1473,7 +1473,7 @@ class DMUL(Instruction):
         operand_stack = frame.operand_stack
         val1 = operand_stack.pop_double()
         val2 = operand_stack.pop_double()
-        res = val1 * val2
+        res = val2 * val1
         operand_stack.push_double(res)
 
 
@@ -1485,9 +1485,9 @@ class IDIV(Instruction):
         operand_stack = frame.operand_stack
         val1 = operand_stack.pop_int()
         val2 = operand_stack.pop_int()
-        if val2 == 0:
+        if val1 == 0:
             error_handler.rise_runtime_error('java.lang.ArithmeticException: x / 0')
-        res = val1 / val2
+        res = val2 / val1
         operand_stack.push_int(res)
 
 
@@ -1499,9 +1499,9 @@ class LDIV(Instruction):
         operand_stack = frame.operand_stack
         val1 = operand_stack.pop_long()
         val2 = operand_stack.pop_long()
-        if val2 == 0:
+        if val1 == 0:
             error_handler.rise_runtime_error('java.lang.ArithmeticException: x / 0')
-        res = val1 / val2
+        res = val2 / val1
         operand_stack.push_long(res)
 
 
@@ -1514,7 +1514,7 @@ class FDIV(Instruction):
         operand_stack = frame.operand_stack
         val1 = operand_stack.pop_float()
         val2 = operand_stack.pop_float()
-        res = val1 / val2
+        res = val2 / val1
         operand_stack.push_float(res)
 
 
@@ -1527,7 +1527,7 @@ class DDIV(Instruction):
         operand_stack = frame.operand_stack
         val1 = operand_stack.pop_double()
         val2 = operand_stack.pop_double()
-        res = val1 / val2
+        res = val2 / val1
         operand_stack.push_double(res)
 
 
@@ -1539,10 +1539,10 @@ class IREM(Instruction):
         operand_stack = frame.operand_stack
         val2 = operand_stack.pop_int()
         val1 = operand_stack.pop_int()
-        if val2 == 0:
+        if val1 == 0:
             error_handler.rise_runtime_error('java.lang.ArithmeticException: x / 0')
         # res = val1 - int(val1 / val2) * val2
-        res = val1 % val2
+        res = val2 % val1
         operand_stack.push_int(res)
 
 
@@ -1554,10 +1554,10 @@ class LREM(Instruction):
         operand_stack = frame.operand_stack
         val2 = operand_stack.pop_long()
         val1 = operand_stack.pop_long()
-        if val2 == 0:
+        if val1 == 0:
             error_handler.rise_runtime_error('java.lang.ArithmeticException: x / 0')
         # res = val1 - int(val1 / val2) * val2
-        res = val1 % val2
+        res = val2 % val1
         operand_stack.push_long(res)
 
 
@@ -1570,7 +1570,7 @@ class FREM(Instruction):
         operand_stack = frame.operand_stack
         val2 = operand_stack.pop_float()
         val1 = operand_stack.pop_float()
-        res = val1 % val2
+        res = val2 % val1
         operand_stack.push_float(res)
 
 
@@ -1583,7 +1583,7 @@ class DREM(Instruction):
         operand_stack = frame.operand_stack
         val2 = operand_stack.pop_double()
         val1 = operand_stack.pop_double()
-        res = val1 % val2
+        res = val2 % val1
         operand_stack.push_double(res)
 
 
@@ -1896,8 +1896,6 @@ class INVOKEVIRTUAL(Instruction):
         self.__hack_println(n_frame, method)
         # 处理 thread
         self.__hack_thread(n_frame, method)
-        # hack GPIO
-        self.__hack_board(n_frame, method)
         
     def __hack_board(self, n_frame, method):
         if 'board' in method.jclass.name:
@@ -2925,11 +2923,13 @@ class WIDE(Instruction):
             ins.index = self.index
             self.ins = ins
         elif self.code in self.type2_code_map:
+            #print("------------------------------------------------BOO")
             ins = self.type2_code_map[self.code]()
             ins.index = self.index
             const1 = code_parser.read_op()
             const2 = code_parser.read_op()
             self.const = (const1 << 8) | const2
+            #print("------------------------------------------------", self.const)
             ins.const = self.const
             self.ins = ins
 

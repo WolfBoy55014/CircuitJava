@@ -4,7 +4,7 @@ from jvm.base.utils.print_utils import printb, printo
 
 class NativeClassLoader(object):
     default_loader = None
-    native_classes = ["board/based/Boo", "java/lang/StringBuilder", "board/Pin"]
+    native_classes = ["board/based/Boo", "java/lang/StringBuilder", "board/Pin", "board/ADC", "board/DAC"]
     
     def __init__(self):
         self.loaded_classes = {}
